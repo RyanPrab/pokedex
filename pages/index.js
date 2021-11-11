@@ -1,9 +1,7 @@
 import Head from 'next/head'
-import { useState, useEffect } from 'react';
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
 import styled from 'styled-components';
 import PokemonList from '../components/PokemonList';
+import SearchBar from '../components/SearchBar';
 
 const Wrapper = styled.div.attrs(() => ({
   className: `wrapper`
@@ -31,9 +29,7 @@ const Container = styled.div.attrs(() => ({
 }))``;
 
 export default function Home(props) {
-  const {
-    pokemons
-  } = props;
+  const { pokemons } = props;
 
   return (
     <Wrapper>
@@ -48,6 +44,7 @@ export default function Home(props) {
         </div>
 
         <Container>
+          <SearchBar/>
           <PokemonList
             pokemons={pokemons}
           />
@@ -58,10 +55,12 @@ export default function Home(props) {
 }
 
 export async function getServerSideProps(context) {
-  const data = await fetch(`https://pokeapi.co/api/v2/pokemon`)
+  let pokemonArray = [];
+
+  let endpoint = "https://pokeapi.co/api/v2/pokemon";
+  const data = await fetch(endpoint)
     .then((response) => response.json());
 
-  let pokemonArray = [];
 
   for (let index = 0; index < data.results.length; index++) {
     const element = data.results[index];
