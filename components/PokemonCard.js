@@ -8,11 +8,11 @@ const CardWrapper = styled.div.attrs(() => ({
 }))``;
 
 const ImageWrapper = styled.div.attrs(() => ({
-  className: `relative w-40 h-40`
+  className: `self-center relative w-40 h-40`
 }))``;
 
 const DetailWrapper = styled.div.attrs(() => ({
-  className: `flex flex-col`
+  className: `flex flex-col space-y-2 p-2`
 }))``;
 
 const TypesWrapper = styled.div.attrs(() => ({
@@ -50,7 +50,7 @@ export default function PokemonCard(props) {
                   {type?.map((item, index) => {
                     const color = typeParser(item?.type?.name)
                     return (
-                      <div key={index} className={`flex w-1/2 text-sm border justify-center rounded mx-1 bg-${color}`}>
+                      <div key={index} className={`flex w-1/2 text-xs text-white p-2 border justify-center rounded mx-1 bg-${color}`}>
                         {item.type.name.toUpperCase()}
                       </div>
                     );

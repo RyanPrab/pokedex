@@ -61,7 +61,6 @@ export async function getServerSideProps(context) {
   const data = await fetch(`https://pokeapi.co/api/v2/pokemon`)
     .then((response) => response.json());
 
-
   let pokemonArray = [];
 
   for (let index = 0; index < data.results.length; index++) {
