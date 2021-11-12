@@ -48,7 +48,7 @@ export default function PokemonCard(props) {
                 </div>
                 <TypesWrapper>
                   {type?.map((item, index) => {
-                    const color = typeParser(item?.type?.name)
+                    const color = typeParser(item?.type?.name);
                     return (
                       <div key={index} className={`flex w-1/2 text-xs text-white p-2 border justify-center rounded mx-1 bg-${color}`}>
                         {item.type.name.toUpperCase()}

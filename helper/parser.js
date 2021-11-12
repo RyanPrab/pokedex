@@ -57,7 +57,7 @@ export const typeParser = (type) => {
       color = 'yellow-900';
       return color;
     default:
-      color = 'current';
+      color = 'black';
       return color;
   }
 }

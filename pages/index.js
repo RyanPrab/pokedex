@@ -2,6 +2,7 @@ import Head from 'next/head'
 import styled from 'styled-components';
 import PokemonList from '../components/PokemonList';
 import SearchBar from '../components/SearchBar';
+import NavBar from '../components/NavBar';
 
 const Wrapper = styled.div.attrs(() => ({
   className: `wrapper`
@@ -29,7 +30,7 @@ const Container = styled.div.attrs(() => ({
 }))``;
 
 export default function Home(props) {
-  const { pokemons } = props;
+  const { pokemons, types } = props;
 
   return (
     <Wrapper>
@@ -45,6 +46,9 @@ export default function Home(props) {
 
         <Container>
           <SearchBar/>
+          <NavBar
+            category={types}
+          />
           <PokemonList
             pokemons={pokemons}
           />
@@ -57,7 +61,7 @@ export default function Home(props) {
 export async function getServerSideProps(context) {
   let pokemonArray = [];
 
-  let endpoint = "https://pokeapi.co/api/v2/pokemon";
+  const endpoint = "https://pokeapi.co/api/v2/pokemon";
   const data = await fetch(endpoint)
     .then((response) => response.json());
 
@@ -83,9 +87,13 @@ export async function getServerSideProps(context) {
     pokemonArray.push(pokemonAttr);
   }
 
+  const types = await fetch(`https://pokeapi.co/api/v2/type/`)
+    .then((response) => response.json());
+
   return {
     props: {
-      pokemons: pokemonArray
+      pokemons: pokemonArray,
+      types: types.results
     }
   }
 }
