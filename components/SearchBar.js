@@ -39,11 +39,7 @@ export default function SearchBar() {
   }, []);
 
   const handleSearch = () => {
-    router.query.search = searchQuery;
-    router.push({
-      pathname: router.pathname,
-      query: router.query
-    });
+    router?.push(`/search?q=${searchQuery}`)
     setIsLoading(false);
   }
 
