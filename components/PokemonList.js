@@ -24,9 +24,10 @@ export default function PokemonList(props) {
 
   const router = useRouter();
   const query = router?.query?.q;
+  const slug = router?.query?.slug;
 
   useEffect(() => {
-    if (query) {
+    if (query || slug) {
       setHasMore(false);
     }
   }, []);
@@ -44,12 +45,13 @@ export default function PokemonList(props) {
     if (hasMore) {
       for (let index = 0; index < newData.results.length; index++) {
         const element = newData.results[index];
+        const artwork = "official-artwork";
 
         const pokemonDetail = await fetch(element.url)
         .then((response) => response.json());
 
         const name = pokemonDetail?.name;
-        const image = pokemonDetail?.sprites?.front_default;
+        const image = pokemonDetail?.sprites?.other?.[artwork]?.front_default;
         const type = pokemonDetail?.types;
         const order = pokemonDetail?.id;
 

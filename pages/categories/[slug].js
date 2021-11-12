@@ -1,8 +1,8 @@
 import Head from 'next/head'
 import styled from 'styled-components';
-import PokemonList from '../components/PokemonList';
-import SearchBar from '../components/SearchBar';
-import NavBar from '../components/NavBar';
+import PokemonList from '../../components/PokemonList';
+import SearchBar from '../../components/SearchBar';
+import NavBar from '../../components/NavBar';
 import Link from 'next/link';
 
 const Wrapper = styled.div.attrs(() => ({
@@ -62,18 +62,17 @@ export default function Home(props) {
 }
 
 export async function getServerSideProps(context) {
+  const { query } = context;
   let pokemonArray = [];
 
-  const endpoint = "https://pokeapi.co/api/v2/pokemon";
-  const data = await fetch(endpoint)
+  const category = await fetch(`https://pokeapi.co/api/v2/type/${query?.slug}/`)
     .then((response) => response.json());
 
-
-  for (let index = 0; index < data.results.length; index++) {
-    const element = data.results[index];
+  for (let index = 0; index < category.pokemon.length; index++) {
+    const element = category.pokemon[index];
     const artwork = "official-artwork";
 
-    const pokemonDetail = await fetch(element.url)
+    const pokemonDetail = await fetch(element?.pokemon?.url)
     .then((response) => response.json());
 
     const name = pokemonDetail?.name;

@@ -44,15 +44,15 @@ export default function NavBar(props) {
               return (
                 <NavColumn key={i}>
                   <NavItem>
-                    {/* <Link
+                    <Link
                       href={{
-                        pathname: '/categories/' + cat?.url_key
+                        pathname: '/categories/' + cat?.name
                       }}
-                    > */}
+                    >
                       <NavLink className={`bg-${color}`}>
                         {cat?.name.toUpperCase()}
                       </NavLink>
-                    {/* </Link> */}
+                    </Link>
                   </NavItem>
                 </NavColumn>
               )
