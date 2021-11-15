@@ -65,11 +65,17 @@ export async function getServerSideProps(context) {
   const { query } = context;
   let pokemonArray = [];
 
-  const category = await fetch(`https://pokeapi.co/api/v2/type/${query?.slug}/`)
-    .then((response) => response.json());
+  const category = await fetch(`https://pokeapi.co/api/v2/type/${query?.slug}/`);
 
-  for (let index = 0; index < category.pokemon.length; index++) {
-    const element = category.pokemon[index];
+  if (category?.status === 404) {
+    return {
+      notFound: true
+    };
+  }
+
+  const data = await category.json();
+  for (let index = 0; index < data.pokemon.length; index++) {
+    const element = data.pokemon[index];
     const artwork = "official-artwork";
 
     const pokemonDetail = await fetch(element?.pokemon?.url)

@@ -2,6 +2,8 @@ import Head from 'next/head'
 import styled from 'styled-components';
 import PokemonList from '../components/PokemonList';
 import SearchBar from '../components/SearchBar';
+import NavBar from '../components/NavBar';
+import Link from 'next/link';
 
 const Wrapper = styled.div.attrs(() => ({
   className: `wrapper`
@@ -29,7 +31,7 @@ const Container = styled.div.attrs(() => ({
 }))``;
 
 export default function Home(props) {
-  const { pokemons } = props;
+  const { pokemons, types } = props;
 
   return (
     <Wrapper>
@@ -39,12 +41,17 @@ export default function Home(props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Page className="bg-gray-500">
-        <div className="flex justify-center py-4">
-          <h1 className="p-4 font-bold text-4xl bg-blue-300 rounded">Pokedex</h1>
-        </div>
+        <Link href="/">
+          <div className="flex justify-center py-4 cursor-pointer">
+            <h1 className="p-4 font-bold text-4xl bg-blue-300 rounded">Pokedex</h1>
+          </div>
+        </Link>
 
         <Container>
           <SearchBar/>
+          <NavBar
+            category={types}
+          />
           <PokemonList
             pokemons={pokemons}
           />
@@ -60,10 +67,15 @@ export async function getServerSideProps(context) {
   let pokemonArray = [];
 
   const endpoint = `https://pokeapi.co/api/v2/pokemon/${search}/`;
-  const data = await fetch(endpoint)
-    .then((response) => response.json());
+  const searchedPokemon = await fetch(endpoint);
 
-  console.log(data);
+  if (searchedPokemon?.status === 404) {
+    return {
+      notFound: true
+    };
+  }
+
+  const data = await searchedPokemon.json();
 
   const name = data?.name;
   const image = data?.sprites?.front_default;
@@ -79,9 +91,13 @@ export async function getServerSideProps(context) {
 
   pokemonArray.push(pokemonAttr);
 
+  const types = await fetch(`https://pokeapi.co/api/v2/type/`)
+    .then((response) => response.json());
+
   return {
     props: {
-      pokemons: pokemonArray
+      pokemons: pokemonArray,
+      types: types.results
     }
   }
 }

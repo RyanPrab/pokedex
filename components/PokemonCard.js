@@ -27,7 +27,7 @@ export default function PokemonCard(props) {
       {
         pokemons.map((item, index) => {
           const name = item?.name;
-          const image = item?.image;
+          const image = item?.image || '/no_image.png';
           const type = item?.type;
 
           return (
