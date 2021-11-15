@@ -78,9 +78,10 @@ export async function getServerSideProps(context) {
   const data = await searchedPokemon.json();
 
   const name = data?.name;
-  const image = data?.sprites?.front_default;
   const type = data?.types;
   const order = data?.id;
+  const artwork = "official-artwork";
+  const image = data?.sprites?.other?.[artwork]?.front_default;
 
   const pokemonAttr = {
     order: order,
